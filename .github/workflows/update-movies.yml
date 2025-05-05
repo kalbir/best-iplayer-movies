@@ -2,7 +2,7 @@ name: Update Movies List
 
 on:
   schedule:
-    - cron: '0 0 * * 0'  # Run at midnight every Sunday
+    - cron: '0 22 * * *'  # Run at 10 PM (22:00) every day
   workflow_dispatch:  # Allow manual triggering
 
 jobs:
@@ -26,8 +26,10 @@ jobs:
       run: |
         python src/main.py
         
-    - name: Deploy to GitHub Pages
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: output  # The folder the action should deploy
-        branch: gh-pages  # The branch the action should deploy to 
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add output/
+        git commit -m "Update movies list [skip ci]" || exit 0
+        git push 

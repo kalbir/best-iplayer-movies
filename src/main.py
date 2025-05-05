@@ -11,6 +11,7 @@ from scrapers.iplayer import IPlayerScraper
 from scrapers.imdb import IMDBScraper
 from jinja2 import Environment, FileSystemLoader
 import os
+import shutil
 import concurrent.futures
 from typing import Dict, Any
 
@@ -20,6 +21,21 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+def copy_static_assets():
+    """Copy static assets to the output directory."""
+    # Create output directory if it doesn't exist
+    os.makedirs('output', exist_ok=True)
+    
+    # Copy static files
+    if os.path.exists('static'):
+        for item in os.listdir('static'):
+            src = os.path.join('static', item)
+            dst = os.path.join('output', item)
+            if os.path.isdir(src):
+                shutil.copytree(src, dst, dirs_exist_ok=True)
+            else:
+                shutil.copy2(src, dst)
 
 def generate_html(movies):
     """Generate HTML output using Jinja2 template."""
@@ -103,6 +119,9 @@ def main():
                 logger.error(f"Error processing movie: {str(e)}")
     
     logger.info(f"Successfully enriched {len(enriched_movies)} movies with IMDB data")
+    
+    # Copy static assets
+    copy_static_assets()
     
     # Generate HTML output
     output_path = generate_html(enriched_movies)
