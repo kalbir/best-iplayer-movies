@@ -1,11 +1,11 @@
 # Best iPlayer Movies
 
-This project scrapes BBC iPlayer for available movies and ranks them based on ratings from Rotten Tomatoes and IMDB. The results are presented in a static webpage.
+This project scrapes BBC iPlayer for available movies and ranks them based on ratings from IMDB. The results are presented in a static webpage.
 
 ## Features
 
 - Fetches current movies from BBC iPlayer
-- Retrieves ratings from Rotten Tomatoes and IMDB
+- Retrieves ratings from IMDB
 - Ranks movies based on combined ratings
 - Generates a static webpage with the results
 - Deploys the webpage to the internet
