@@ -100,6 +100,9 @@ def main():
     # Get current movies from iPlayer
     movies = iplayer_scraper.get_current_movies()
     logger.info(f"Found {len(movies)} movies on iPlayer")
+    # Fail the run rather than publish an empty site when iPlayer changes under us
+    if not movies:
+        raise RuntimeError("No movies found on iPlayer - has the page changed?")
     
     # Enrich movie data with IMDB information using parallel processing
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
